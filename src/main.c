@@ -81,6 +81,67 @@ typedef struct {
   bool     mbc1_mode;
 } MBC;
 
+// =============================================================================
+// CPU
+// =============================================================================
+
+// labeled: "a", "b", "c", "d", "e", "f", "h", "l"
+uint8_t registers[8];
+
+uint16_t read_16bit_vreg(uint8_t idx1, uint8_t idx2)
+{
+  uint16_t reg1 = registers[idx1];
+  uint16_t reg2 = registers[idx2];
+  return (reg1 << 8) | reg2;
+}
+
+void write_16bit_vreg(uint8_t idx1, uint8_t idx2, uint16_t value)
+{
+  registers[idx1] = (uint8_t)((value & 0xFF00) >> 8);
+  registers[idx2] = (uint8_t)(value & 0xFF);
+}
+
+uint16_t read_af()
+{
+  return read_16bit_vreg(0, 5);
+}
+
+void write_af(uint16_t value)
+{
+  write_16bit_vreg(0, 5, value);
+}
+
+uint16_t read_bc()
+{
+  return read_16bit_vreg(1, 2);
+}
+
+void write_bc(uint16_t value)
+{
+  return write_16bit_vreg(1, 2, value);
+}
+
+uint16_t read_de()
+{
+  return read_16bit_vreg(3, 4);
+}
+
+void write_de(uint16_t value)
+{
+  return write_16bit_vreg(3, 4, value);
+}
+
+uint16_t read_hl()
+{
+  return read_16bit_vreg(6, 7);
+}
+
+void write_hl(uint16_t value)
+{
+  return write_16bit_vreg(6, 7, value);
+}
+
+// TODO: read/write to bits in the flag register, f
 
 // =============================================================================
 // MAIN
